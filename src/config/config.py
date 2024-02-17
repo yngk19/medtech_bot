@@ -9,11 +9,9 @@ BOT_TOKEN: str = env.str("BOT_TOKEN")
 LOGGING_LEVEL: str = env.str("LOGGING_LEVEL")
 
 PG_HOST: str = env.str("PG_HOST")
-PG_PORT: int = env.int("PG_PORT")
 PG_USER: str = env.str("PG_USER")
 PG_PASSWORD: str = env.str("PG_PASSWORD")
 PG_DATABASE: str = env.str("PG_DATABASE")
-
 
 
 USE_CACHE: bool = env.bool("USE_CACHE", False)
