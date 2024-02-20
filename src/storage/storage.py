@@ -1,3 +1,10 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy_utils import database_exists, create_database
+import json
+
+data = {
+    "name": "John Doe",
+    "age": 30,
+    "city": "New York"
+}
+
+with open("data.json", "w") as f:
+    json.dump(data, f)

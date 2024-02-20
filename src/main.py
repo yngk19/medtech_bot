@@ -1,46 +1,31 @@
 import asyncio
 import logging
-
-from aiogram import Bot, Dispatcher, F
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters.command import Command
+from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.types import FSInputFile, CallbackQuery
+from aiogram import F
 from aiogram.fsm.storage.memory import MemoryStorage
-#from aiogram.fsm.storage.redis import RedisStorage
+from aiogram.methods.set_my_commands import SetMyCommands
 
 
-from config import config
-from handlers import on_start
+from config.config import *
+from handlers import cmd_start
+from utils.setup_commands import setup_commands
 
 async def main() -> None:
-    logging.basicConfig(level=logging.DEBUG, 
-                        format="%(asctime)s - [%(levelname)s] - %(name)s - "
-                               "(%(filename)s).%(funcName)s(%(lineno)d) - %(message)s"
-                        )
-
-    bot = Bot(config.BOT_TOKEN, parse_mode="HTML")
-
-    '''
-    if config.fsm_mode == "redis":
-        storage = RedisStorage.from_url(
-            url=,
-            connection_kwargs={"decode_responses": True}
-        )
-    else:
-        storage = MemoryStorage()
-    '''
-    storage = MemoryStorage()
-
-    dp = Dispatcher(storage=storage, config=config)
-
-    dp.startup.register(on_start)
-    #dp.include_router(default_commands.router)
-    #dp.include_router(spin.router)
+    logging.basicConfig(level=logging.INFO)
     
-    #await set_bot_commands(bot, l10n)
+    bot = Bot(BOT_TOKEN)
+    await bot.set_my_commands(commands=setup_commands())
+    dp = Dispatcher(storage=MemoryStorage())
+        
+    dp.include_router(cmd_start.router)
 
-    try:
-        await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
-    finally:
-        await bot.session.close()
+
+    await dp.start_polling(bot)
 
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     asyncio.run(main())
