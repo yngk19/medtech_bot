@@ -7,7 +7,7 @@ import aiogram
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 
-from utils.messages import GREETING, BTN_START_TEST
+from utils.messages import GREETING, BTN_START_TEST, TEST_RESULT
 from utils.load_questions import load_questions
 from utils.save_answers import save_answers
 from fsm.test import TestFSM
@@ -77,11 +77,16 @@ async def answer_callback(callback: CallbackQuery, state: FSMContext):
         await save_answers(answers, user_id)
         await state.clear()
         await callback.message.delete()
-        await cmd_start(callback.message, state)
+        await test_result(callback)
 
 
-
-
+async def test_result(callback: CallbackQuery):
+    file_ids = []
+    image_from_pc = FSInputFile("/app/media/menu.jpg")
+    result = await callback.message.answer_photo(image_from_pc,
+                                      caption=TEST_RESULT
+    )
+    file_ids.append(result.photo[-1].file_id)
 
 
 

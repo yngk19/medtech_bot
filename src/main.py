@@ -22,7 +22,7 @@ async def main() -> None:
     await bot.set_my_commands(commands=setup_commands())
     if USE_CACHE:
         r = Redis(
-            host=REDIS_HOST,
+            host=REDIS_HOST,    
             port=REDIS_PORT,
             username=REDIS_USER, 
             password=REDIS_PASSWORD, 

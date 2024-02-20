@@ -16,6 +16,9 @@ clean:
 bash:
 	docker-compose run --rm bot bash
 
+ps:
+	docker ps
+
 
 
 .PHONY: build up down logs bash clean
