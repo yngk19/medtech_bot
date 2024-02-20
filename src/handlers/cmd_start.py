@@ -25,7 +25,7 @@ async def cmd_start(message: Message, state: FSMContext):
   await state.update_data(answers=[])
   await state.update_data(user_id=message.from_user.id)
   file_ids = []
-  image_from_pc = FSInputFile("../media/menu.jpg")
+  image_from_pc = FSInputFile("/app/media/menu.jpg")
   result = await message.answer_photo(
     image_from_pc,
     caption=GREETING,
@@ -38,7 +38,7 @@ async def cmd_start(message: Message, state: FSMContext):
 @router.callback_query(TestFSM.menu, F.data == "btn_test")
 async def send_question(callback: CallbackQuery, state: FSMContext):
     file_ids = []
-    image_from_pc = FSInputFile("../media/menu.jpg")
+    image_from_pc = FSInputFile("/app/media/menu.jpg")
     user_data = await state.get_data()
     question_id = user_data['question_id']
     answers = user_data['answers']

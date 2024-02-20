@@ -3,13 +3,13 @@ version: "3.8"
 services:
   bot:
     build: . 
-    command: sh -c "make migrate && python -m bot"
+    command: python3 src/main.py
     env_file:
       - ./.env
     restart: always
     depends_on:
       - db
-      - redis
+      - cache
 
   db:
     image: postgres:14-alpine
@@ -20,17 +20,24 @@ services:
     volumes: 
       - pgdata:/var/lib/postgresql/data 
     restart: on-failure
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
 
-  redis:
-    image: redis:alpine
-    command:
-      - redis-server
-    env_file:
-      - ./.env
-    restart: on-failure
+  cache:
+    image: redis:6.2-alpine
+    restart: always
     ports:
-      - "6379:6379"
-
+      - '6380:6380'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - cache:/data
+    environment:
+      - REDIS_USERNAME
+      - REDIS_PASSWORD
 volumes:
   pgdata:
+  cache:
+    driver: local
 

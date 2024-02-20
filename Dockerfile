@@ -1,4 +1,4 @@
-FROM python:3.9-slim as builder
+FROM python:3.9-slim
 
 WORKDIR /app
 
@@ -7,15 +7,9 @@ ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update 
 
-COPY requirements.txt .
+COPY . .
 
 RUN pip install -r requirements.txt
-
-FROM python:3.9-slim
-
-WORKDIR /app
-
-COPY . .
 
 
 CMD ["python3", "src/main.py"]
