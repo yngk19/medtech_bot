@@ -15,7 +15,7 @@ PG_DATABASE: str = env.str("POSTGRES_DB")
 USE_CACHE: bool = env.bool("USE_CACHE")
 
 if USE_CACHE:
-	REDIS_PORT: str = env.str("REDIS_PORT")
+	REDIS_PORT: int = env.int("REDIS_PORT")
 	REDIS_HOST: str = env.str("REDIS_HOST")
 	REDIS_USER: str = env.str("REDIS_USER")
 	REDIS_PASSWORD: str = env.str("REDIS_PASSWORD")

@@ -19,7 +19,7 @@ async def cmd_start(message: Message, state: FSMContext):
   image_from_pc = FSInputFile("/app/media/menu.jpg")
   result = await message.answer_photo(
     image_from_pc,
-    caption=GREETING,
-    reply_markup=menu_kb.menu_kb(3)
+    caption=messages.MENU,
+    reply_markup=menu_kb.menu_kb(1)
   )
   file_ids.append(result.photo[-1].file_id)

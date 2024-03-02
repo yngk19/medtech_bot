@@ -8,30 +8,29 @@ from aiogram import F
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.methods.set_my_commands import SetMyCommands
-from redis import Redis
-
+import redis.asyncio as redis
 
 from config.config import *
-from handlers import cmd_start
+from handlers import cmd_start, cmd_lk, diagnostics, dialog
 from utils.setup_commands import setup_commands
+
+
+if USE_CACHE:
+    storage = RedisStorage.from_url(url=f"redis://{REDIS_HOST}:{REDIS_PORT}/0")
+    dp = Dispatcher(storage=storage)
+else:
+    dp = Dispatcher(storage=MemoryStorage())
+
 
 async def main() -> None:
     logging.basicConfig(level=logging.INFO)
-    
     bot = Bot(BOT_TOKEN)
-    await bot.set_my_commands(commands=setup_commands())
-    if USE_CACHE:
-        r = Redis(
-            host=REDIS_HOST,    
-            port=REDIS_PORT,
-            username=REDIS_USER, 
-            password=REDIS_PASSWORD, 
-        )
-        dp = Dispatcher(storage=MemoryStorage())
-    else:
-        dp = Dispatcher(storage=MemoryStorage())
-    dp.include_router(cmd_start.router)
 
+    await bot.set_my_commands(commands=setup_commands())
+    dp.include_router(cmd_start.router)
+    dp.include_router(cmd_lk.router)
+    dp.include_router(diagnostics.router)
+    dp.include_router(dialog.router)
 
     await dp.start_polling(bot)
 

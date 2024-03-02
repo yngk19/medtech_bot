@@ -8,4 +8,6 @@ def setup_commands() -> List:
 	help_command = BotCommand(command='help', description='Помощь')
 	menu_command = BotCommand(command='menu', description='Меню')
 	lk_command = BotCommand(command='lk', description='Личный кабинет')
-	return [start_command, help_command, menu_command, lk_command]
+	auth_command = BotCommand(command='auth', description='Авторизация')
+	register_command = BotCommand(command='register', description='Регистрация')
+	return [start_command, help_command, menu_command, lk_command, auth_command, register_command]
