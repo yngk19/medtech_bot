@@ -1,8 +1,8 @@
 import json
 import asyncio
 
-async def load_questions():
-    with open("/app/db/questions.json", "r") as f:
+async def LoadQuestions():
+    with open("/home/yusuf/Desktop/medbot/db/questions.json", "r") as f:
         questions = json.load(f)
         questions_list = list(questions.values())[0]
     return questions_list

@@ -20,7 +20,7 @@ router = Router()
 @router.message(Command("start"))
 async def cmd_start(message: Message, state: FSMContext):
   file_ids = []
-  image_from_pc = FSInputFile("/app/media/menu.jpg")
+  image_from_pc = FSInputFile("/home/yusuf/Desktop/medbot/media/menu.jpg")
   result = await message.answer_photo(
     image_from_pc,
     caption=GREETING,

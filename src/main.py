@@ -11,8 +11,8 @@ from aiogram.methods.set_my_commands import SetMyCommands
 import redis.asyncio as redis
 
 from config.config import *
-from handlers import cmd_start, cmd_lk, diagnostics, dialog
 from utils.setup_commands import setup_commands
+from handlers.unauthuser import cmdstart, checkup, cancel
 
 
 if USE_CACHE:
@@ -27,10 +27,9 @@ async def main() -> None:
     bot = Bot(BOT_TOKEN)
 
     await bot.set_my_commands(commands=setup_commands())
-    dp.include_router(cmd_start.router)
-    dp.include_router(cmd_lk.router)
-    dp.include_router(diagnostics.router)
-    dp.include_router(dialog.router)
+    dp.include_router(cmdstart.router)
+    dp.include_router(checkup.router)
+    dp.include_router(cancel.router)
 
     await dp.start_polling(bot)
 
