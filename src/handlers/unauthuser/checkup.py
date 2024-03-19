@@ -6,6 +6,8 @@ import asyncio
 import aiogram
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
+import requests
+
 
 from constants.unauthuser import constants
 from keyboards.unauthuser import keyboards
@@ -64,6 +66,7 @@ async def AnswerHandler(callback: CallbackQuery, state: FSMContext):
         await Diagnostics(callback, state)
     else:
         await callback.message.delete()
+        await SaveAnswers(answers, user_id)
         await Form(callback, state)
 
 
@@ -109,9 +112,49 @@ async def GetMailFake(message: Message, state: FSMContext):
 async def DiagnosticsResults(message: Message):
     file_ids = []
     menuImage = FSInputFile("/home/yusuf/Desktop/medbot/media/menu.jpg")
+    with open("/home/yusuf/Desktop/medbot/db/" + "user_" + str(message.from_user.id) + ".txt", "r") as fp:
+        s = "".join(fp.readlines())
+    resp = GetDiagnos(s)
+    text = ''
+    if resp.status_code == 400:
+        text = '''
+            Извините, произошла какая-то ошибка. Обратитесь к врачу.
+        '''
+    else:
+        text = resp.text 
     result = await message.answer_photo(
         menuImage,
-        caption=constants.RESULTS,
+        caption=text,
         reply_markup=keyboards.ResultsKeyboard()
     )
     file_ids.append(result.photo[-1].file_id)
+
+
+
+def GetDiagnos(checkupResult):
+    API_KEY = "AIzaSyACDgDdRuyt9r6vSU_KxHeSzWuyUofVUZ0"
+
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + API_KEY
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+    result = f''' 
+    Ты помощник врача-диагноста, твоя задача, быть ему полезным и с точность до 90% при имеющемся анамнезе предсказывать наиближайший диагноз, 
+    далее я буду давать тебе вводную информацию, по которой ты сделаешь определенные выводы, имеется Пациент, он прошел тест 
+    и ты делаешь результаты на основании его ответов, помоги врачу и составь рекомендацию и диагноз в формате текста, чтобы это было максимально профессионально, и уложись в 100 слов,
+    ниже информация предоставленная пациентом: 
+    {checkupResult}
+    '''
+
+    data = {
+        "contents": [{
+            "parts":[{
+                "text": result
+            }]
+        }]
+    }
+
+    response = requests.post(url, headers=headers, json=data)
+
+    return response
