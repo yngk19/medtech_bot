@@ -34,7 +34,7 @@ async def StartDiagnostics(callback: CallbackQuery, state: FSMContext):
 
 async def Diagnostics(callback: CallbackQuery, state: FSMContext):
     file_ids = []
-    menuImage = FSInputFile("/home/yusuf/Desktop/medbot/media/menu.jpg")
+    menuImage = FSInputFile("/app/media/menu.jpg")
     user_data = await state.get_data()
     question_id = user_data['question_id']
     questions = user_data['questions']
@@ -74,7 +74,7 @@ async def AnswerHandler(callback: CallbackQuery, state: FSMContext):
 async def Form(callback: CallbackQuery, state: FSMContext):
     await state.set_state(states.Diagnostics.contact)
     file_ids = []
-    menuImage = FSInputFile("/home/yusuf/Desktop/medbot/media/menu.jpg")
+    menuImage = FSInputFile("/app/media/menu.jpg")
     result = await callback.message.answer_photo(menuImage,
         caption=constants.CONTACT,
         reply_markup=keyboards.ContactKeyboard()
@@ -111,8 +111,8 @@ async def GetMailFake(message: Message, state: FSMContext):
 
 async def DiagnosticsResults(message: Message):
     file_ids = []
-    menuImage = FSInputFile("/home/yusuf/Desktop/medbot/media/menu.jpg")
-    with open("/home/yusuf/Desktop/medbot/db/" + "user_" + str(message.from_user.id) + ".txt", "r") as fp:
+    menuImage = FSInputFile("/app/media/menu.jpg")
+    with open("/app/medbot/db/" + "user_" + str(message.from_user.id) + ".txt", "r") as fp:
         s = "".join(fp.readlines())
     resp = GetDiagnos(s)
     text = ''
@@ -156,5 +156,5 @@ def GetDiagnos(checkupResult):
     }
 
     response = requests.post(url, headers=headers, json=data)
-
+    logging.info(response.json())
     return response

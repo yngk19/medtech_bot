@@ -25,7 +25,7 @@ async def cmd_start(message: Message, state: FSMContext):
     await Agreement(message, state)
     return
   file_ids = []
-  menuImage = FSInputFile("/home/yusuf/Desktop/medbot/media/menu.jpg")
+  menuImage = FSInputFile("/app/media/menu.jpg")
   result = await message.answer_photo(
     menuImage,
     caption=constants.MENU,

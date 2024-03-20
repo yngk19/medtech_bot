@@ -22,7 +22,7 @@ async def Cancel(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
     await state.set_state(state=None)
     file_ids = []
-    menuImage = FSInputFile("/home/yusuf/Desktop/medbot/media/menu.jpg")
+    menuImage = FSInputFile("/app/media/menu.jpg")
     result = await callback.message.answer_photo(menuImage,
                                       caption=constants.MENU,
                                       reply_markup=keyboards.MenuKeyboard()
