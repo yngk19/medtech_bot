@@ -18,7 +18,11 @@ bash:
 
 ps:
 	docker ps
-
+restart:
+	make down
+	make build
+	make run
+	make logs
 
 
 .PHONY: build up down logs bash clean

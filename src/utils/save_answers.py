@@ -6,4 +6,4 @@ async def SaveAnswers(answers, user_id):
     for answer in answers:
       fp.write(answer[0] + " -> " + answer[1] + "\n")
     fp.close()
-  mutex = 1
+

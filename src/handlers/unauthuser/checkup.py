@@ -112,7 +112,7 @@ async def GetMailFake(message: Message, state: FSMContext):
 async def DiagnosticsResults(message: Message):
     file_ids = []
     menuImage = FSInputFile("/app/media/menu.jpg")
-    with open("/app/medbot/db/" + "user_" + str(message.from_user.id) + ".txt", "r") as fp:
+    with open("/app/db/" + "user_" + str(message.from_user.id) + ".txt", "r") as fp:
         s = "".join(fp.readlines())
     resp = GetDiagnos(s)
     text = ''
@@ -156,5 +156,5 @@ def GetDiagnos(checkupResult):
     }
 
     response = requests.post(url, headers=headers, json=data)
-    logging.info(response.json())
+    print(response.json())
     return response
