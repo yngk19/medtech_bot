@@ -121,7 +121,7 @@ async def DiagnosticsResults(message: Message):
             Извините, произошла какая-то ошибка. Обратитесь к врачу.
         '''
     else:
-        text = resp.text 
+        text = resp.json()['candidates'][0]['content']['parts'][0]['text']
     result = await message.answer_photo(
         menuImage,
         caption=text,
